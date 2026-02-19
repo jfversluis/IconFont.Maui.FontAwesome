@@ -29,7 +29,4 @@ public static partial class IconFontBuilderExtensions
         }
         return builder;
     }
-
-    // Kept for backwards compatibility with generated UseIconFonts() alias
-    internal static MauiAppBuilder UseIconFont(this MauiAppBuilder builder) => builder.UseFontAwesome();
 }

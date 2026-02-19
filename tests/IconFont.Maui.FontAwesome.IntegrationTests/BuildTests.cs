@@ -40,7 +40,7 @@ public class BuildTests
         Assert.Contains("FontAwesomeRegular", configText);
         Assert.Contains("FontAwesomeBrands", configText);
 
-        var extText = extensions.Select(File.ReadAllText).First(text => text.Contains("UseIconFonts"));
+        var extText = extensions.Select(File.ReadAllText).First(text => text.Contains("IconFontBuilderExtensions"));
         Assert.Contains("UseFontAwesomeSolid", extText);
         Assert.Contains("UseFontAwesomeRegular", extText);
         Assert.Contains("UseFontAwesomeBrands", extText);
