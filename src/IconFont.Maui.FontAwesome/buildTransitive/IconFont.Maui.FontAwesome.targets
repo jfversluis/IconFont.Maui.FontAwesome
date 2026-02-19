@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MauiFont Include="$(MSBuildThisFileDirectory)Fonts/%(IconFontDefinition.FileName)%(IconFontDefinition.Extension)"
-              Alias="%(IconFontDefinition.FontAlias)" />
+    <MauiFont Include="@(IconFontDefinition)" Alias="%(IconFontDefinition.FontAlias)" />
   </ItemGroup>
 </Project>
