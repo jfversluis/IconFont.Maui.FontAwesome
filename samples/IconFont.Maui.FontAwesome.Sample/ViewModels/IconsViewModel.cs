@@ -14,6 +14,8 @@ public class IconGlyph
 
 public class IconsViewModel
 {
+    private static readonly HashSet<string> SkipFields = new() { "FontFamily" };
+
     public ObservableCollection<IconGlyph> Icons { get; } = new();
 
     public IconsViewModel(string? fontClass = null)
@@ -24,20 +26,23 @@ public class IconsViewModel
             if (fontClass is not null && !string.Equals(cfg.ClassName, fontClass, StringComparison.Ordinal))
                 continue;
 
-            // Find the generated static class that matches the configured class name exactly
-            var type = asm.GetTypes()
-                .FirstOrDefault(t => t.IsAbstract && t.IsSealed
+            // Find all static classes whose name starts with the configured class name.
+            // This handles both naming patterns:
+            //   - "FluentIcons" matches "FluentIconsRegular", "FluentIconsFilled", etc.
+            //   - "FontAwesomeSolid" matches "FontAwesomeSolid" (exact match when style is in the name)
+            // Helper classes (e.g., "FontAwesome") are included but have no glyph fields, so they contribute nothing.
+            var matchingTypes = asm.GetTypes()
+                .Where(t => t.IsAbstract && t.IsSealed
                     && t.Namespace == cfg.Namespace
-                    && t.Name == cfg.ClassName);
+                    && t.Name.StartsWith(cfg.ClassName, StringComparison.Ordinal))
+                .OrderBy(t => t.Name, StringComparer.Ordinal);
 
-            if (type is not null)
+            foreach (var type in matchingTypes)
             {
                 AddIcons(type, cfg.FontAlias, type.Name);
             }
         }
     }
-
-    private static readonly HashSet<string> SkipFields = new() { "FontFamily" };
 
     private void AddIcons(Type type, string fontFamily, string identifierPrefix)
     {
