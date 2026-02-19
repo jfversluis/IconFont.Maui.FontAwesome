@@ -6,7 +6,7 @@
 
 ## ✨ Features
 
-- ⚙️ **One-line setup**: call `builder.UseIconFont()` in `MauiProgram` to register all three font styles
+- ⚙️ **One-line setup**: call `builder.UseFontAwesome()` in `MauiProgram` to register all three font styles
 - 🔤 **Strongly-typed glyphs** via `FontAwesomeSolid.*`, `FontAwesomeRegular.*`, `FontAwesomeBrands.*`
 - 🧰 **Helper API**: `FontAwesome.Create()` for quick `FontImageSource` creation
 - 📱 **Supported targets**: Android, iOS, Mac Catalyst, Windows
@@ -24,13 +24,13 @@ dotnet add package IconFont.Maui.FontAwesome
 ```csharp
 var builder = MauiApp.CreateBuilder()
     .UseMauiApp<App>()
-    .UseIconFont(); // registers all Font Awesome styles
+    .UseFontAwesome(); // registers all Font Awesome styles
 ```
 
 Or register a single style:
 
 ```csharp
-builder.UseIconFont(nameof(FontAwesomeSolid));
+builder.UseFontAwesomeSolid();
 ```
 
 ### XAML usage
