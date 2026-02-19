@@ -1,0 +1,31 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)IconFont.props" Condition="Exists('$(MSBuildThisFileDirectory)IconFont.props')" />
+
+  <!-- Clear source-relative paths imported from IconFont.props and redefine with NuGet package paths -->
+  <ItemGroup>
+    <IconFontDefinition Remove="@(IconFontDefinition)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <IconFontDefinition Include="$(MSBuildThisFileDirectory)Fonts/fa-solid-900.otf">
+      <FontAlias>FontAwesomeSolid</FontAlias>
+      <FontClass>FontAwesomeSolid</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+    <IconFontDefinition Include="$(MSBuildThisFileDirectory)Fonts/fa-regular-400.otf">
+      <FontAlias>FontAwesomeRegular</FontAlias>
+      <FontClass>FontAwesomeRegular</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+    <IconFontDefinition Include="$(MSBuildThisFileDirectory)Fonts/fa-brands-400.otf">
+      <FontAlias>FontAwesomeBrands</FontAlias>
+      <FontClass>FontAwesomeBrands</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiFont Include="$(MSBuildThisFileDirectory)Fonts/%(IconFontDefinition.FileName)%(IconFontDefinition.Extension)"
+              Alias="%(IconFontDefinition.FontAlias)" />
+  </ItemGroup>
+</Project>

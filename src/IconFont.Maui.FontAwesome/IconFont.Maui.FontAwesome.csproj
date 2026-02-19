@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="IconFont.props" />
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+		<PackageId>IconFont.Maui.FontAwesome</PackageId>
+		<Title>Font Awesome Free Icons for .NET MAUI</Title>
+		<Description>Provides Font Awesome Free icons (Solid, Regular, Brands) as a drop-in icon font for .NET MAUI applications with automatic font registration.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/jfversluis/IconFont.Maui.FontAwesome</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/jfversluis/IconFont.Maui.FontAwesome</PackageProjectUrl>
+		<PackageTags>maui;icons;font;fontawesome</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+		<NoWarn>$(NoWarn);CS1591;CS0108</NoWarn>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>$(IntermediateOutputPath)generated</CompilerGeneratedFilesOutputPath>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="generated/**/*.cs" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+	</ItemGroup>
+
+	<!-- Register all defined fonts as MauiFont -->
+	<ItemGroup>
+		<MauiFont Include="@(IconFontDefinition)" Alias="%(IconFontDefinition.FontAlias)" />
+	</ItemGroup>
+
+	<!-- Pack font files, .targets, .props, and license into NuGet -->
+	<ItemGroup>
+		<None Include="@(IconFontDefinition)" Pack="true" PackagePath="buildTransitive/Fonts/%(FileName)%(Extension)" />
+		<None Include="buildTransitive/IconFont.Maui.FontAwesome.targets" Pack="true" PackagePath="buildTransitive" />
+		<None Include="IconFont.props" Pack="true" PackagePath="buildTransitive" />
+		<None Include="IconFont.props" Pack="true" PackagePath="buildTransitive/IconFont.Maui.FontAwesome.props" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\..\NOTICE.md" Pack="true" PackagePath="" Condition="Exists('..\..\NOTICE.md')" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="" Condition="Exists('..\..\README.md')" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IconFont.Maui.SourceGenerator" Version="1.3.1"
+			OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	</ItemGroup>
+
+</Project>

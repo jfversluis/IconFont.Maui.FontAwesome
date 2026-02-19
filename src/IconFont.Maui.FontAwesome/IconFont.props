@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <IconFontFile>fa-solid-900.otf</IconFontFile>
+    <IconFontAlias>FontAwesomeSolid</IconFontAlias>
+    <IconFontClass>FontAwesomeSolid</IconFontClass>
+    <IconFontNamespace>IconFont.Maui.FontAwesome</IconFontNamespace>
+  </PropertyGroup>
+
+  <!-- Multi-font support: define one or more IconFontDefinition items. -->
+  <ItemGroup>
+    <IconFontDefinition Include="Resources/Fonts/fa-solid-900.otf">
+      <FontAlias>FontAwesomeSolid</FontAlias>
+      <FontClass>FontAwesomeSolid</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+    <IconFontDefinition Include="Resources/Fonts/fa-regular-400.otf">
+      <FontAlias>FontAwesomeRegular</FontAlias>
+      <FontClass>FontAwesomeRegular</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+    <IconFontDefinition Include="Resources/Fonts/fa-brands-400.otf">
+      <FontAlias>FontAwesomeBrands</FontAlias>
+      <FontClass>FontAwesomeBrands</FontClass>
+      <FontNamespace>IconFont.Maui.FontAwesome</FontNamespace>
+    </IconFontDefinition>
+  </ItemGroup>
+</Project>

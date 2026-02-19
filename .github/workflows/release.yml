@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g., 1.2.3)'
+        required: true
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  pack-and-push:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+      - name: Restore
+        run: dotnet restore src/IconFont.Maui.FontAwesome/IconFont.Maui.FontAwesome.csproj
+      - name: Pack
+        run: |
+          VERSION=${{ inputs.version != '' && inputs.version || github.ref_name }}
+          VERSION=${VERSION#v}
+          dotnet pack src/IconFont.Maui.FontAwesome/IconFont.Maui.FontAwesome.csproj -c Release -p:Version=$VERSION -o artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: artifacts/*.nupkg
+      - name: NuGet login (OIDC)
+        uses: nuget/login@v1
+        id: nuget-login
+        with:
+          user: jfversluis
+      - name: Push to NuGet
+        run: |
+          dotnet nuget push artifacts/*.nupkg \
+            --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
